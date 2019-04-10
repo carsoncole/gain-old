@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_07_223444) do
+ActiveRecord::Schema.define(version: 2019_04_09_011811) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "title"
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 2019_04_07_223444) do
     t.index ["user_id", "account_id"], name: "index_accounts_users_on_user_id_and_account_id"
   end
 
+  create_table "securities", force: :cascade do |t|
+    t.integer "issuer_id"
+    t.string "name"
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issuer_id"], name: "index_securities_on_issuer_id"
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.date "date"
     t.integer "account_id"
@@ -34,7 +43,8 @@ ActiveRecord::Schema.define(version: 2019_04_07_223444) do
     t.decimal "quantity", precision: 12, scale: 2
     t.decimal "accrued_interest", precision: 12, scale: 2
     t.decimal "amount", precision: 12, scale: 2
-    t.decimal "balance", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "security_balance", precision: 15, scale: 5
+    t.decimal "cash_balance", precision: 12, scale: 2
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

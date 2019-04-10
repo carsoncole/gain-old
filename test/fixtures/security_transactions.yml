@@ -1,0 +1,44 @@
+security_one:
+  date: 2019-04-06
+  account: one
+  security: one
+  price: 10.25
+  quantity: 2
+  security_balance: 8
+  type: SecurityTransaction
+
+security_two:
+  date: 2019-04-01
+  account: one
+  security: one
+  price: 10.25
+  quantity: 2
+  security_balance: 4
+  type: SecurityTransaction
+
+security_three:
+  date: 2019-04-03
+  account: one
+  security: one
+  price: 10.25
+  quantity: 2
+  security_balance: 6
+  type: SecurityTransaction
+
+security_four:
+  date: 2019-03-27
+  account: one
+  security: one
+  price: 10.25
+  quantity: 2
+  security_balance: 2
+  type: SecurityTransaction
+
+security_five:
+  date: 2019-1-1
+  account: four
+  security: three
+  price: 10.25
+  quantity: 100
+  security_balance: 100
+  type: SecurityTransaction

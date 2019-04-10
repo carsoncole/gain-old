@@ -1,0 +1,6 @@
+cash_one:
+  date: <%= Date.today - 7.days %>
+  account: two
+  amount: 50
+  cash_balance: 50
+  type: CashTransaction

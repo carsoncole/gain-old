@@ -8,7 +8,8 @@ class CreateTransactions < ActiveRecord::Migration[5.2]
       t.decimal :quantity, scale: 2, precision: 12
       t.decimal :accrued_interest, scale: 2, precision: 12
       t.decimal :amount, scale: 2, precision: 12
-      t.decimal :balance, scale: 2, precision: 12, default: 0.0, null: false
+      t.decimal :security_balance, scale: 5, precision: 15
+      t.decimal :cash_balance, scale: 2, precision: 12
       t.string :type
 
       t.timestamps
