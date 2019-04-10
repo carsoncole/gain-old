@@ -1,16 +1,19 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   issuer: one
   name: MyString
-  type:
+  type: Stock
 
 two:
-  issuer: two
+  issuer: one
   name: MyString
-  type:
+  type: Stock
 
 three:
-  issuer: three
+  issuer: eon
   name: MyString
-  type:
+  type: Stock
+
+four:
+  issuer: one
+  name: MyString
+  type: Bond

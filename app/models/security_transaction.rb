@@ -11,7 +11,7 @@ class SecurityTransaction < Transaction
   private
 
   def calculate_amount!
-    self.amount = price * quantity
+    self.amount = price / security.price_unit * security.par_value * quantity
   end
 
   def calculate_security_balance!
