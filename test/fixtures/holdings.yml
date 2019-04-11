@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account: one
+  date: 2019-04-10
+  security: one
+  quantity: 9.99
+
+two:
+  account: two
+  date: 2019-04-10
+  security: two
+  quantity: 9.99

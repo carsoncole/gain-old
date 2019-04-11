@@ -1,3 +1,5 @@
+# Cash transactions have security_id = nil, and the quantity represents the amount of cash.
+
 class CashTransaction < Transaction
   validates :cash_balance, presence: true
 
@@ -9,13 +11,13 @@ class CashTransaction < Transaction
   def calculate_cash_balance!
     return if avoid_recalc
     self.cash_balance = if account.cash_transactions.empty? 
-      amount
+      quantity
     else
       earlier_transactions = account.cash_transactions.where("date <= ? AND created_at <= ?", date, Time.now)
       if earlier_transactions.any?
-        earlier_transactions.last.cash_balance + amount
+        earlier_transactions.last.cash_balance + quantity
       else
-        amount
+        quantity
       end
     end
   end
@@ -26,7 +28,7 @@ class CashTransaction < Transaction
     return if transactions_to_process.empty?
     last_balance = self.cash_balance
     transactions_to_process.each do |t|
-      t.cash_balance = last_balance + t.amount
+      t.cash_balance = last_balance + t.quantity
       last_balance = t.cash_balance
       t.avoid_recalc = true
       t.save

@@ -4,6 +4,7 @@ class Account < ApplicationRecord
   has_many :transactions
   has_many :security_transactions
   has_many :cash_transactions
+  has_many :holdings
 
   validates :title, presence: true
 
