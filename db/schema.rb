@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
 
   create_table "issuers", force: :cascade do |t|
     t.string "name"
+    t.boolean "is_active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -48,6 +49,9 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
     t.integer "issuer_id"
     t.string "name"
     t.string "type"
+    t.boolean "is_active", default: true, null: false
+    t.string "currency", default: "usd", null: false
+    t.boolean "is_cash", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["issuer_id"], name: "index_securities_on_issuer_id"
@@ -73,6 +77,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "encrypted_password", null: false
+    t.boolean "is_owner", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

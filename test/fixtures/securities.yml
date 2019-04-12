@@ -1,19 +1,23 @@
 one:
   issuer: one
   name: MyString
+  currency: usd
   type: Stock
 
 two:
   issuer: one
   name: MyString
+  currency: usd
   type: Stock
 
 three:
   issuer: eon
   name: MyString
+  currency: usd
   type: Stock
 
 four:
   issuer: one
   name: MyString
+  currency: usd
   type: Bond

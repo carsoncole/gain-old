@@ -10,8 +10,12 @@ class AccountTest < ActiveSupport::TestCase
       )
   end
 
-  test "for zero balance if no transactions" do
+  test "for zero cash balance if no transactions" do
     assert_equal 0, accounts(:three).cash_balance(Date.today - 10.days)
+  end
+
+  test "for zero security balance if no transactions" do
+    assert_equal 0, accounts(:three).security_balance(Date.today - 10.days)
   end
 
   test "assert cash balance" do
