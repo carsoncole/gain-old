@@ -10,6 +10,7 @@ class CreateTransactions < ActiveRecord::Migration[5.2]
       t.decimal :amount, scale: 2, precision: 12
       t.decimal :security_balance, scale: 5, precision: 15
       t.decimal :cash_balance, scale: 2, precision: 12
+      t.string :transaction_type
       t.string :type
 
       t.timestamps

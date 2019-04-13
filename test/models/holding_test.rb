@@ -14,37 +14,42 @@ class HoldingTest < ActiveSupport::TestCase
       security: securities(:one),
       quantity: 10,
       price: 10,
-      date: Date.today
+      date: Date.today,
+      transaction_type: 'Buy'
       )
 
-    # there should be one holding
+    # there should be two holding, 1 cash, 1 security
     holdings = @account.holdings.where(date: Date.today)
-    assert_equal 1, holdings.count
-    assert_equal 10, holdings.first.quantity
-    assert_equal securities(:one).id, holdings.first.security_id
+    assert_equal 2, holdings.count
+    security_holdings = holdings.where(security: securities(:one)).first
+    assert_equal 10, security_holdings.quantity
+    assert_equal securities(:one).id, security_holdings.security_id
 
     @account.security_transactions.create(
       security: securities(:one),
       quantity: 25,
       price: 10,
-      date: Date.today
+      date: Date.today,
+      transaction_type: 'Buy'
       )
 
     # there should be one holding with a new quantity
     holdings = @account.holdings.where(date: Date.today)
-    assert_equal 1, holdings.count
-    assert_equal 35, holdings.first.quantity
+    assert_equal 2, holdings.count
+    security_holdings = holdings.where(security: securities(:one)).first
+    assert_equal 35, security_holdings.quantity
 
     @account.security_transactions.create(
       security: securities(:two),
       quantity: 15,
       price: 10,
-      date: Date.today
+      date: Date.today,
+      transaction_type: 'Buy'
       )
 
     # there should be two holdings
     holdings = @account.holdings.where(date: Date.today)
-    assert_equal 2, holdings.count
+    assert_equal 3, holdings.count
     assert_equal 35, holdings.where(security_id: securities(:one).id).first.quantity
     assert_equal 15, holdings.where(security_id: securities(:two).id).first.quantity
   end
@@ -54,7 +59,8 @@ class HoldingTest < ActiveSupport::TestCase
       security: securities(:one),
       quantity: 10,
       price: 10,
-      date: Date.today
+      date: Date.today,
+      transaction_type: 'Buy'
       )
 
     transaction.update(quantity: 25)

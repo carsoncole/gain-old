@@ -8,6 +8,7 @@ class Transaction < ApplicationRecord
   default_scope { order(date: :asc, created_at: :desc) }
 
   before_save :update_holdings!
+  after_save :create_cash_transaction!, unless: Proc.new { |t| t.security_id.nil? }
 
   private
 
@@ -20,5 +21,9 @@ class Transaction < ApplicationRecord
     else
       account.holdings.create(date: date, security_id: security_id, quantity: quantity)
     end
+  end
+
+  def create_cash_transaction!
+    account.cash_transactions.create(date: date, quantity: transaction_type == 'Buy' ? -amount : amount)
   end
 end

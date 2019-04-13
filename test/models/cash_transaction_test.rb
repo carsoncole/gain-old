@@ -2,13 +2,13 @@ require 'test_helper'
 
 class CashTransactionTest < ActiveSupport::TestCase
   setup do
-    @transaction = CashTransaction.new(date: Date.today, account: accounts(:two))
+    @transaction = build(:cash_transaction)
   end
 
   test "balance should equal amount" do
     @transaction.quantity = 125
     @transaction.save
-    assert_equal 175, @transaction.cash_balance
+    assert_equal 125, @transaction.cash_balance
   end
 
   test "balance is accurate for subsequent transactions" do

@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
     t.decimal "amount", precision: 12, scale: 2
     t.decimal "security_balance", precision: 15, scale: 5
     t.decimal "cash_balance", precision: 12, scale: 2
+    t.string "transaction_type"
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

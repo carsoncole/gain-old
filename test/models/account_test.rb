@@ -2,12 +2,14 @@ require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
   setup do
-    @transaction = SecurityTransaction.new(
-      date: Date.today,
-      price: 10,
-      quantity: 20,
+    @transaction = build(:security_transaction,
       security: securities(:three)
       )
+  end
+
+  test "create an account from a factory" do
+    account = create(:account)
+    assert_equal "John Doe", account.title
   end
 
   test "for zero cash balance if no transactions" do
@@ -29,6 +31,6 @@ class AccountTest < ActiveSupport::TestCase
     assert @transaction.valid?
     @transaction.save
 
-    assert_equal 120, accounts(:four).security_balance(securities(:three))
+    assert_equal 200, accounts(:four).security_balance(securities(:three))
   end
 end
