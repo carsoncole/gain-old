@@ -5,23 +5,31 @@ class SecurityTest < ActiveSupport::TestCase
     assert Security.create
   end
 
+  test "auto creation of cash account" do
+    account = create(:account)
+    assert account.cash_security('usd')
+
+    assert account.cash_security('usd'), "error"
+  end
+
   test "only one non-issuer (cash) security can exist per currency" do
-    usd_security = Security.new(currency: 'usd', is_cash: true)
-    assert usd_security.save
+    account = create(:account)
+    usd_cash = Cash.new(currency: 'usd', account: account)
+    assert usd_cash.save
 
-    jpy_security = Security.new(currency: 'jpy', is_cash: true)
-    assert jpy_security.save
+    jpy_cash = Cash.new(currency: 'jpy', account: account)
+    assert jpy_cash.save
 
-    second_usd_security = Security.create(currency: 'usd', is_cash: true)
-
-    assert_equal second_usd_security.errors["issuer"][0], "has already been taken"
+    second_usd_cash = Cash.new(currency: 'usd', account: account)
+    second_usd_cash.valid?
+    assert_equal second_usd_cash.errors["account"][0], "has already been taken"
   end
 
   test "more than one issuer security can exist per currency" do
-    usd_security = Stock.new(issuer: issuers(:one), currency: 'usd')
+    usd_security = Stock.new(currency: 'usd', account: create(:account))
     assert usd_security.save
 
-    # second_usd_security = Stock.new(issuer: issuers(:two), currency: 'usd')
-    # assert second_usd_security.save
+    usd_security_2 = Stock.new(currency: 'usd', account: create(:account))
+    assert usd_security_2.save, "Failed to create more than 1 same-currency securities"
   end
 end

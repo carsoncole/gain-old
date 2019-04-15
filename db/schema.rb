@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_11_021022) do
+ActiveRecord::Schema.define(version: 2019_04_10_180626) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "title"
@@ -26,18 +26,6 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
     t.index ["user_id", "account_id"], name: "index_accounts_users_on_user_id_and_account_id"
   end
 
-  create_table "holdings", force: :cascade do |t|
-    t.integer "account_id"
-    t.date "date"
-    t.integer "security_id"
-    t.decimal "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_holdings_on_account_id"
-    t.index ["date", "account_id"], name: "index_holdings_on_date_and_account_id"
-    t.index ["security_id"], name: "index_holdings_on_security_id"
-  end
-
   create_table "issuers", force: :cascade do |t|
     t.string "name"
     t.boolean "is_active", default: true, null: false
@@ -46,15 +34,15 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
   end
 
   create_table "securities", force: :cascade do |t|
+    t.integer "account_id"
     t.integer "issuer_id"
     t.string "name"
-    t.string "type"
     t.boolean "is_active", default: true, null: false
     t.string "currency", default: "usd", null: false
-    t.boolean "is_cash", default: false, null: false
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["issuer_id"], name: "index_securities_on_issuer_id"
+    t.index ["account_id"], name: "index_securities_on_account_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -64,6 +52,8 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
     t.decimal "price", precision: 15, scale: 5
     t.decimal "quantity", precision: 12, scale: 2
     t.decimal "accrued_interest", precision: 12, scale: 2
+    t.decimal "commission", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "other", precision: 12, scale: 2, default: "0.0", null: false
     t.decimal "amount", precision: 12, scale: 2
     t.decimal "security_balance", precision: 15, scale: 5
     t.decimal "cash_balance", precision: 12, scale: 2
@@ -71,6 +61,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_021022) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id", "date", "created_at", "type"], name: "index_on_date_created_and_type"
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["security_id"], name: "index_transactions_on_security_id"
   end

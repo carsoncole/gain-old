@@ -8,12 +8,19 @@ FactoryBot.define do
   end
 
   factory :security do
-    issuer
   end
 
-  factory :stock
+  factory :stock do
+    account
+  end
 
-  factory :bond
+  factory :bond do
+    account
+  end
+
+  factory :cash do
+    account
+  end
 
   factory :account do
     title { "John Doe"}
@@ -31,5 +38,6 @@ FactoryBot.define do
   factory :cash_transaction do
     date { Date.today }
     account
+    association :security, factory: :cash
   end
 end

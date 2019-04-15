@@ -1,36 +1,19 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
-  setup do
-    @transaction = build(:security_transaction,
-      security: securities(:three)
-      )
-  end
-
   test "create an account from a factory" do
     account = create(:account)
     assert_equal "John Doe", account.title
   end
 
   test "for zero cash balance if no transactions" do
-    assert_equal 0, accounts(:three).cash_balance(Date.today - 10.days)
+    account = create(:account)
+    cash_security = account.cash_security('usd')
+    assert_equal 0, account.cash_balance(cash_security)
   end
 
   test "for zero security balance if no transactions" do
-    assert_equal 0, accounts(:three).security_balance(Date.today - 10.days)
-  end
-
-  test "assert cash balance" do
-    assert_equal 0, accounts(:four).cash_balance
-  end
-
-  test "asset security balance" do
-    assert_equal 100, accounts(:four).security_balance(securities(:three))
-
-    @transaction.account = accounts(:four)
-    assert @transaction.valid?
-    @transaction.save
-
-    assert_equal 200, accounts(:four).security_balance(securities(:three))
+    account = create(:account)
+    assert_equal 0, account.security_balance(create(:security, account: account))
   end
 end

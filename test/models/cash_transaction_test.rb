@@ -6,35 +6,59 @@ class CashTransactionTest < ActiveSupport::TestCase
   end
 
   test "balance should equal amount" do
-    @transaction.quantity = 125
-    @transaction.save
-    assert_equal 125, @transaction.cash_balance
+    transaction = create(:cash_transaction,
+      quantity: 125
+      )
+    assert transaction.persisted?
+    assert_equal 125, transaction.cash_balance
   end
 
-  test "balance is accurate for subsequent transactions" do
-    assert_equal 50, accounts(:two).cash_balance
+  test "transaction balance is accurate for subsequent transactions" do
+      account = create(:account)
+      cash_security = create(:cash, account: account)
 
-    @transaction_2 = accounts(:two).cash_transactions.create(
+      transaction = create(:cash_transaction,
+        account: account,
+        date: Date.today - 1.day,
+        quantity: 125,
+        security: cash_security
+      )
+
+    20.times do
+      create(:cash_transaction,
+        account: account,
+        date: Date.today,
+        quantity: 100,
+        security: cash_security
+        )
+    end
+
+    assert_equal 2125, account.cash_balance(cash_security)
+  end
+
+  test "transaction balance is accurate for out-of-order dated transactions" do
+    transaction = create(:cash_transaction,
+      account: create(:account),
+      quantity: 125
+    )
+    transaction_2 = create(:cash_transaction,
+      account: transaction.account,
       date: Date.today - 1.day,
       quantity: 125
       )
-    assert_equal 175, accounts(:two).cash_balance
+    assert_equal 250, transaction.reload.cash_balance
   end
 
-  test "balance is accurate for out-of-order dated transactions" do
-    @transaction_2 = accounts(:two).cash_transactions.create(
-      date: Date.today - 10.days,
-      quantity: 200
+  test "transaction balance is accurate when post-dated transactions" do
+    transaction = create(:cash_transaction,
+      account: create(:account),
+      quantity: 125
+    )
+    transaction_post_dated = create(:cash_transaction,
+      account: transaction.account,
+      date: Date.today + 2.days,
+      quantity: 125
       )
-    assert_equal 250, accounts(:two).cash_balance
-  end
-
-  test "balance is correct for an earlier date" do
-    @transaction_2 = accounts(:two).cash_transactions.create(
-      date: Date.today - 1.day,
-      quantity: 55
-      )
-    assert_equal 50, accounts(:two).cash_balance(Date.today - 7.days)
-    assert_equal 105, accounts(:two).cash_balance(Date.today)
+    assert_equal 125, transaction.cash_balance
   end
 end
